@@ -10,6 +10,7 @@
     /// This downloader does not work if your URLs contain escaped characters (e.g. '%2F' instead of '/')
     /// because of a bug in older .NET. It decodes the escape sequences back to the characters which
     /// can cause 404.
+    /// See https://stackoverflow.com/questions/25596564/percent-encoded-slash-is-decoded-before-the-request-dispatch
     /// </remarks>
     public class PowershellHttpDownloader : HttpDownloader
     {

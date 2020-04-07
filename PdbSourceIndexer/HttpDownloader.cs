@@ -8,6 +8,9 @@
     /// For these cases we have to use workaround with external downloader (e.g. wget, curl).
     /// Using the <see cref="IFilterVariables"/> service we transform variables from direct
     /// download to indirect download.
+    /// See https://github.com/ctaggart/SourceLink/issues/94
+    /// See https://github.com/GitTools/GitLink/issues/80
+    /// See https://stackoverflow.com/questions/36698756/srctool-claims-it-has-extracted-source-files-but-just-lists-their-urls
     /// </summary>
     public abstract class HttpDownloader : IFilterVariables
     {
