@@ -86,7 +86,6 @@
             {
                 var command = new Command(pair.Key);
 
-
                 var providerInfo = pair.Value;
                 var providerType = providerInfo.ProviderType;
                 var properties = providerType.GetProperties(BindingFlags.Instance | BindingFlags.Public)

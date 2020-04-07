@@ -2,6 +2,12 @@
 
 Extensible and easy to use PDB source indexer written in C#.
 
+## Highlights
+
+* Easy to integrate with your CI workflow.
+* Easily extensible to fit your needs.
+* Handles projects with Git submodules.
+
 ## Usage
 
 ```
@@ -31,7 +37,7 @@ Specifies the source server provider to use. The following providers are current
 |`--server-url <server-url>`|GitLab server URL (e.g. _https://mygitlab.example.com_).|
 
 When using the GitLab provider the git repository origin url must point to GitLab server URL (i.e. either _git@mygitlab.example.com:/project.git_ or _https://mygitlab.example.com/project.git_). This is ok when indexing PDBs under GitLab-CI.
-Also when using the indexed PDB under debugger, the `GITLAB_SRCSRV_TOKEN` variable in user's _srvsrv.ini_ must be set to repository read access PAT (see below).
+Also when using the indexed PDB under debugger, the `GITLAB_SRCSRV_TOKEN` variable in user's _srvsrv.ini_ must be set to repository read access PAT (see below). Also due to the inability of source server to download files from URLs with the query part you will have to install the _wget_ utility somewhere on the _%PATH%_ or point the _srcsrv.ini_ to it.
 
 **Example**
 
@@ -55,3 +61,14 @@ GITLAB_SRCSRV_TOKEN=AaBbCcDdEeFf12345678
 where the value is personal access token with at least the _read_repository_ scope. The token can be created in user's GitLab settings page.
 
 In this case you may want to save the file into your profile directory so other users can't access your PAT.
+
+If the source server provider uses external program to extract the source file from the version control system you may want to specify the path to the utility in the _srcsrv.ini_. E.g. the GitLab provider uses _wget_ to download the source file, you tell source server where to find _wget_ as follows:
+
+```ini
+[trusted commands]
+wget=C:\wget\wget.exe
+```
+
+### Visual Studio
+
+Besides authoring the _srcsrv.ini_ file as above you also have to enable source server support in Visual Studio. Check the _Tools > Options > Debugging > Enable source server support_ checkbox.
