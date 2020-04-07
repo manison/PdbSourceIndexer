@@ -200,5 +200,11 @@ namespace PdbSourceIndexer
             _repositoryToProjectId.Add(repositoryPath, projectId);
             return projectId;
         }
+
+        protected override void OnLoggerChanged()
+        {
+            base.OnLoggerChanged();
+            _gitProvider.Log = this.Log;
+        }
     }
 }

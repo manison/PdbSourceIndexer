@@ -77,12 +77,15 @@
             string repositoryRelativeFilePath = sourceFilePath.FullName.Substring(repositoryRootPath.Length);
             repositoryRelativeFilePath = repositoryRelativeFilePath.Replace('\\', '/');
 
-            var diff = repository.Diff.Compare<TreeChanges>(new string[] { repositoryRelativeFilePath }, false);
-            var changes = diff.Added.ToList();
-            var status = repository.RetrieveStatus(new StatusOptions() { PathSpec = new string[] { repositoryRelativeFilePath } });
-
             // Latest commit.
             var commit = repository.Head.Commits.First();
+
+            var treeEntry = commit[repositoryRelativeFilePath];
+            if (treeEntry == null)
+            {
+                Log.Info($"Untracked file {repositoryRelativeFilePath} will not be indexed.");
+                return null;
+            }
 
             return new GitSourceFileInfo(sourceFile, repository, repositoryRelativeFilePath, commit.Id.Sha);
         }

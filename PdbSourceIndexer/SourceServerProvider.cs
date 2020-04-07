@@ -20,7 +20,24 @@
 
         public abstract IEnumerable<(string Name, string Value)> Variables { get; }
 
-        public ILogger Log { get; set; }
+        private ILogger _log;
+
+        public ILogger Log
+        {
+            get => _log;
+            set
+            {
+                if (!Object.Equals(_log, value))
+                {
+                    _log = value;
+                    OnLoggerChanged();
+                }
+            }
+        }
+
+        protected virtual void OnLoggerChanged()
+        {
+        }
 
         protected SourceServerProvider()
         {
