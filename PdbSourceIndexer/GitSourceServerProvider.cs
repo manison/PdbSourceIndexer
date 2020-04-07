@@ -90,7 +90,7 @@
             return new GitSourceFileInfo(sourceFile, repository, repositoryRelativeFilePath, commit.Id.Sha);
         }
 
-        private static FileInfo CanonicalizeSourceFilePath(string sourceFile)
+        private FileInfo CanonicalizeSourceFilePath(string sourceFile)
         {
             try
             {
@@ -104,7 +104,8 @@
                 return null;
             }
 
-            throw new NotImplementedException("Relative source file paths are not supported yet.");
+            Log.Warn("Relative source file paths are not supported yet.");
+            return null;
         }
 
         private static FileInfo GetExactFileName(FileInfo file)
