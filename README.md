@@ -18,7 +18,7 @@ Extensible and easy to use PDB source indexer written in C#.
 
 |option|description|
 |------|-----------|
-|`--tools-path <tools-path>`|Debugging Tools for Windows installation path. Specifies location of _pdbstr.exe_ and _srctool.exe_ utils. These are part of the Windows SDK. Usually will be something like _C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\srcsrv_.|
+|`--tools-path <tools-path>`|Debugging Tools for Windows installation path. Specifies location of _pdbstr.exe_ and _srctool.exe_ utils. These are part of the Windows SDK. Usually will be something like _C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\srcsrv_. Use this argument if _PdbSourceIndexer_ cannot find the tools automatically.|
 |`--symbol-root <symbol-root>`|Specifies directory where the PDBs to index are located.|
 |`--recursive`|Search symbol files recursively.|
 
@@ -42,7 +42,7 @@ Also when using the indexed PDB under debugger, the `GITLAB_SRCSRV_TOKEN` variab
 **Example**
 
 ```
-PdbSourceIndexer --tools-path "C:\Program Files (x86)\Windows Kits\10\Debuggers\x86\srcsrv" --symbol-root D:\MyProject\bin\Debug gitlab --server-url %CI_SERVER_URL%
+PdbSourceIndexer --symbol-root D:\MyProject\bin\Debug gitlab --server-url %CI_SERVER_URL%
 ```
 
 ## Debugger Setup

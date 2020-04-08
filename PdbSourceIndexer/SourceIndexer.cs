@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
 
     public class SourceIndexer
@@ -67,6 +68,13 @@
             if (DebuggingToolsPath == null)
             {
                 DebuggingToolsPath = FindDebuggingToolsPath();
+                if (DebuggingToolsPath != null)
+                {
+                    if (!DebuggingToolsPath.FullName.StartsWith(AppPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Log.Info($"Found debugging tools at {DebuggingToolsPath.FullName}");
+                    }
+                }
             }
 
             if (DebuggingToolsPath == null)
@@ -90,14 +98,46 @@
             }
         }
 
+        private static string AppPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+        private IEnumerable<string> EnumPossibleDebuggingToolsPaths()
+        {
+            // First check application directory
+            string path = AppPath;
+            yield return path;
+            yield return Path.Combine(path, "srcsrv");
+
+            string GetComponentPath(string componentId)
+            {
+                string fileName = MsiHelper.GetComponentPath(componentId);
+                return fileName == null ? null : Path.GetDirectoryName(fileName);
+            }
+
+            // Try Windows 10 SDK
+            path = GetComponentPath(DebuggingToolsComponentId.Win10SdkX86PdbStr);
+            if (path != null) yield return path;
+            path = GetComponentPath(DebuggingToolsComponentId.Win10SdkX64PdbStr);
+            if (path != null) yield return path;
+        }
+
         private DirectoryInfo FindDebuggingToolsPath()
         {
-            // TODO
+            foreach (var path in EnumPossibleDebuggingToolsPaths())
+            {
+                if (IsDebuggingToolsPathValid(path))
+                {
+                    return new DirectoryInfo(path);
+                }
+            }
+
             return null;
         }
 
         private bool DebuggingToolExists(string toolName)
             => File.Exists(Path.Combine(DebuggingToolsPath.FullName, toolName));
+
+        private static bool IsDebuggingToolsPathValid(string path)
+            => File.Exists(Path.Combine(path, "pdbstr.exe")) && File.Exists(Path.Combine(path, "srctool.exe"));
 
         private bool IndexSymbolFile(FileInfo symbolFile)
         {
