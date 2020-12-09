@@ -43,6 +43,8 @@
 
         public override IEnumerable<(string Name, string Value)> Variables => Array.Empty<(string, string)>();
 
+        public bool NoWarnRelativePaths { get; set; }
+
         public GitSourceServerProvider()
         {
             _repositories = new Dictionary<string, Repository>();
@@ -104,7 +106,11 @@
                 return null;
             }
 
-            Log.Warn("Relative source file paths are not supported yet.");
+            if (!NoWarnRelativePaths)
+            {
+                Log.Warn($"Relative source file paths are not supported yet (path was {sourceFile}).");
+            }
+
             return null;
         }
 

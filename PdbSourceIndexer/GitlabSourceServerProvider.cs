@@ -88,6 +88,13 @@ namespace PdbSourceIndexer
         [Option("--server-url", "GitLab server URL.")]
         public Uri ServerUrl { get; set; }
 
+        [Option("--no-warn-relative-paths", "Suppress warnings for relative source file paths.")]
+        public bool NoWarnRelativePaths
+        {
+            get => _gitProvider.NoWarnRelativePaths;
+            set => _gitProvider.NoWarnRelativePaths = value;
+        }
+
         public Uri ApiUrl
         {
             get
