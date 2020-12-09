@@ -78,6 +78,11 @@
                 new Option("--recursive", "Search symbol files recursively.")
                 {
                     Argument = new Argument<bool>()
+                },
+
+                new Option("--log-level", "Minimum logging level.")
+                {
+                    Argument = new Argument<MessageLevel?>()
                 }
             };
 
@@ -125,7 +130,12 @@
             var symbolRoot = result.RootCommandResult.ValueForOption<DirectoryInfo>("--symbol-root") ?? new DirectoryInfo(".");
             indexer.SymbolFiles = symbolRoot.EnumerateFiles("*.pdb", recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 
-            var providerInfo = _providers[result.CommandResult.Command.Name];
+            if (!_providers.TryGetValue(result.CommandResult.Command.Name, out var providerInfo))
+            {
+                Console.WriteLine("Source provider must be specified. Use -h for help.");
+                return 1;
+            }
+
             var provider = (SourceServerProvider)Activator.CreateInstance(providerInfo.ProviderType);
             foreach (var option in result.CommandResult.Children)
             {
@@ -135,6 +145,7 @@
             }
 
             indexer.Log = new ConsoleLogger();
+            indexer.Log.MinimumLevel = result.RootCommandResult.ValueForOption<MessageLevel?>("--log-level") ?? MessageLevel.Info;
             indexer.SourceServerProvider = provider;
 
             try

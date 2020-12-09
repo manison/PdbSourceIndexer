@@ -165,6 +165,7 @@
                 if (sourceFileInfo != null)
                 {
                     ++sourceFilesProcessed;
+                    Log.Debug($"Indexing {symbolFile.Name}, source file {sourceFileInfo.FileName}.");
                     sourceInfos.Add(sourceFileInfo);
                 }
 
