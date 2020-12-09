@@ -196,6 +196,7 @@ namespace PdbSourceIndexer
                 else if (host == ServerUrl.Host && path.EndsWith(".git"))
                 {
                     projectId = path.Substring(0, path.Length - 4);
+                    projectId = projectId.TrimStart('/');
                 }
             }
 
