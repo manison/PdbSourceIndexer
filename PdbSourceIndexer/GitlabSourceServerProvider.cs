@@ -159,17 +159,17 @@ namespace PdbSourceIndexer
 
         private static (string Host, string Path) ParseGitUrl(string url)
         {
+            if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            {
+                return (uri.Host, uri.AbsolutePath);
+            }
+
             var match = Regex.Match(url, "(.*@)?(.+):(.+)");
             if (match.Success)
             {
                 return (match.Groups[2].Value, match.Groups[3].Value);
             }
 
-            if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            {
-                return (uri.Host, uri.AbsolutePath);
-            }
-            
             return default;
         }
 
