@@ -7,7 +7,7 @@
     <Authors>manison</Authors>
     <Product>PDB Source Indexer</Product>
     <Description>Index PDB symbol files for use with source server</Description>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

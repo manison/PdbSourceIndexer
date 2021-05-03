@@ -21,9 +21,9 @@ namespace PdbSourceIndexer
         {
             get
             {
-                yield return Uri.EscapeDataString(ProjectId);                   // var2
-                yield return Uri.EscapeDataString(ProjectRelativeFileName);     // var3
-                yield return CommitId;                                          // var4
+                yield return SourceServerConvert.EscapeString(Uri.EscapeDataString(ProjectId));               // var2
+                yield return SourceServerConvert.EscapeString(Uri.EscapeDataString(ProjectRelativeFileName)); // var3
+                yield return CommitId;                                                                        // var4
             }
         }
 
